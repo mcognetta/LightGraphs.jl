@@ -478,3 +478,15 @@ function CircularLadderGraph(n::T) where {T <: Integer}
     add_edge!(g, n+1, 2*n)
     return g
 end
+
+function BarbellGraph(n1::T, n2::T) where {T <: Integer}
+    g = blockdiag(CompleteGraph(n1), CompleteGraph(n2))
+    add_edge!(g, n1, n1+1)
+    return g
+end
+
+function LollipopGraph(n1::T, n2::T) where {T <: Integer}
+    g = blockdiag(CompleteGraph(n1), PathGraph(n2))
+    add_edge!(g, n1, n1+1)
+    return g
+end
