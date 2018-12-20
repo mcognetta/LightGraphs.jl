@@ -403,4 +403,40 @@
     @test_throws DomainError CircularLadderGraph(0)
     @test_throws DomainError CircularLadderGraph(1)
     @test_throws DomainError CircularLadderGraph(2)
+
+    g = @inferred(BarbellGraph(5, 6))
+    @test nv(g) == 11 && ne(g) == 26
+    @test isvalid_simplegraph(g)
+    g = BarbellGraph(Int8(5), Int8(6))
+    @test nv(g) == 11 && ne(g) == 26
+    @test isvalid_simplegraph(g)
+    # extreme values
+    g = BarbellGraph(1, 5)
+    @test nv(g) == 6 && ne(g) == 11
+    g = BarbellGraph(5, 1)
+    @test nv(g) == 6 && ne(g) == 11
+    g = BarbellGraph(1, 1)
+    @test nv(g) == 2 && ne(g) == 1
+    @test_throws InexactError BarbellGraph(Int8(100), Int8(50))
+    @test_throws DomainError BarbellGraph(1, 0)
+    @test_throws DomainError BarbellGraph(0, 1)
+    @test_throws DomainError BarbellGraph(-1, -1)
+
+    g = @inferred(LollipopGraph(3, 5))
+    @test nv(g) == 8 && ne(g) == 9
+    @test isvalid_simplegraph(g)
+    g = LollipopGraph(Int8(7), Int8(6))
+    @test nv(g) == 13 && ne(g) == 28
+    @test isvalid_simplegraph(g)
+    # extreme values
+    g = LollipopGraph(1, 3)
+    @test nv(g) == 4 && ne(g) == 3
+    g = LollipopGraph(3, 1)
+    @test nv(g) == 4 && ne(g) == 4
+    g = LollipopGraph(1, 1)
+    @test nv(g) == 2 && ne(g) == 1
+    @test_throws InexactError LollipopGraph(Int8(100), Int8(50))
+    @test_throws DomainError LollipopGraph(1, 0)
+    @test_throws DomainError LollipopGraph(0, 1)
+    @test_throws DomainError LollipopGraph(-1, -1)
 end
