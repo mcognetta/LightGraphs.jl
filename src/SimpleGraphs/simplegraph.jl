@@ -94,7 +94,7 @@ Otherwise the element type is the same as for `g`.
 
 ## Examples
 ```jldoctest
-julia> g = CompleteGraph(5)
+julia> g = complete_graph(5)
 julia> SimpleGraph{UInt8}(g)
 {5, 10} undirected simple UInt8 graph
 ```
@@ -119,7 +119,7 @@ The element type is the same as for `g`.
 
 ## Examples
 ```jldoctest
-julia> g = PathDiGraph(Int8(5))
+julia> g = path_digraph(Int8(5))
 julia> SimpleGraph(g)
 {5, 4} undirected simple Int8 graph
 ```
@@ -333,7 +333,9 @@ Return the backwards adjacency list of a graph. If `v` is specified,
 return only the adjacency list for that vertex.
 
 ###Implementation Notes
-Returns a reference, not a copy. Do not modify result.
+Returns a reference to the current graph's internal structures, not a copy. 
+Do not modify result. If the graph is modified, the behavior is undefined: 
+the array behind this reference may be modified too, but this is not guaranteed.
 """
 badj(g::SimpleGraph) = fadj(g)
 badj(g::SimpleGraph, v::Integer) = fadj(g, v)
@@ -346,7 +348,9 @@ Return the adjacency list of a graph. If `v` is specified, return only the
 adjacency list for that vertex.
 
 ### Implementation Notes
-Returns a reference, not a copy. Do not modify result.
+Returns a reference to the current graph's internal structures, not a copy. 
+Do not modify result. If the graph is modified, the behavior is undefined: 
+the array behind this reference may be modified too, but this is not guaranteed. 
 """
 adj(g::SimpleGraph) = fadj(g)
 adj(g::SimpleGraph, v::Integer) = fadj(g, v)
@@ -364,9 +368,7 @@ fadj(g) == fadj(h)
 
 Return `true` if `g` is a directed graph.
 """
-is_directed(::Type{SimpleGraph}) = false
-is_directed(::Type{SimpleGraph{T}}) where T = false
-is_directed(g::SimpleGraph) = false
+is_directed(::Type{<:SimpleGraph}) = false
 
 function has_edge(g::SimpleGraph{T}, s, d) where T
     verts = vertices(g)
@@ -507,7 +509,7 @@ This function is not part of the official LightGraphs API and is subject to chan
 ```jldoctest
 julia> using LightGraphs
 
-julia> g = CompleteGraph{5}
+julia> g = complete_graph{5}
 {5, 10} undirected simple Int64 graph
 
 julia> vmap = rem_vertices!(g, [2, 4], keep_order=true);
